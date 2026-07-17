@@ -12,7 +12,6 @@ public class CalculadoraController {
     }
 
     public void registrarAccion(String simbolo, Label visor) {
-        // Manejo de números y punto decimal
         if (simbolo.matches("[0-9]") || simbolo.equals(".")) {
             if (limpiarAlDigitar) {
                 primerValor = "";
@@ -28,7 +27,6 @@ public class CalculadoraController {
             }
             actualizarVisor(visor);
         } 
-        // Procesamiento del resultado (=)
         else if (simbolo.equals("=")) {
             if (!primerValor.isEmpty() && !segundoValor.isEmpty() && !signoMatematico.isEmpty()) {
                 double digito1 = Double.parseDouble(primerValor);
@@ -48,6 +46,7 @@ public class CalculadoraController {
                             return;
                         }
                         break;
+                    case "^": resultadoFinal = Math.pow(digito1, digito2); break;
                 }
 
                 if (resultadoFinal % 1 == 0) {
@@ -62,7 +61,28 @@ public class CalculadoraController {
                 visor.setText(primerValor);
             }
         } 
-        // Selección del operador matemático
+        else if (simbolo.equals("√")) {
+            if (!primerValor.isEmpty() && signoMatematico.isEmpty()) {
+                double evaluarRadical = Double.parseDouble(primerValor);
+                if (evaluarRadical >= 0) {
+                    double raizObtenida = Math.sqrt(evaluarRadical);
+                    primerValor = (raizObtenida % 1 == 0) ? String.valueOf((long) raizObtenida) : String.valueOf(raizObtenida);
+                    limpiarAlDigitar = true;
+                    visor.setText(primerValor);
+                } else {
+                    visor.setText("Error");
+                    reiniciarValores();
+                }
+            }
+        }
+        else if (simbolo.equals("%")) {
+            if (!primerValor.isEmpty() && signoMatematico.isEmpty()) {
+                double calculoPorcentaje = Double.parseDouble(primerValor) / 100;
+                primerValor = String.valueOf(calculoPorcentaje);
+                limpiarAlDigitar = true;
+                visor.setText(primerValor);
+            }
+        }
         else {
             if (!primerValor.isEmpty()) {
                 signoMatematico = simbolo;
