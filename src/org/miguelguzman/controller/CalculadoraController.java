@@ -12,6 +12,12 @@ public class CalculadoraController {
     }
 
     public void registrarAccion(String simbolo, Label visor) {
+        if (simbolo.equals("C")) {
+            reiniciarValores();
+            visor.setText("0");
+            return;
+        }
+
         if (simbolo.matches("[0-9]") || simbolo.equals(".")) {
             if (limpiarAlDigitar) {
                 primerValor = "";
